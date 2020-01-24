@@ -4,8 +4,10 @@ module.exports = {
     getProject,
     getProjectWithDetails,
     getProjectResources,
-    removeProject
+    removeProject,
+    updateProject
 }
+
 const Tasks = require('../tasks/tasks-model.js');
 
 const db = require('../data/db-config.js');
@@ -64,5 +66,14 @@ async function removeProject(project_id) {
         .del()
         .then(() => {
             return project;
+        });
+}
+
+function updateProject(project_id, updatedProject) {
+    return db('projects')
+        .where({id : project_id})
+        .update(updatedProject)
+        .then(count => {
+            return getProject(project_id);
         });
 }

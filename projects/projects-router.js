@@ -70,4 +70,16 @@ router.delete('/:id', (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const updatedProject = req.body;
+    Projects.updateProject(id, updatedProject)
+    .then(response => {
+        res.status(200).json(response);
+    })
+    .catch(err => {
+        res.status(500).json({error: err, message: `Unable to update project with id ${id}`});
+    });
+});
+
 module.exports = router;
