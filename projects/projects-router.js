@@ -58,4 +58,16 @@ router.get('/:id/details', (req, res) => {
         });
 })
 
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+
+    Projects.removeProject(id)
+    .then(response => {
+        res.status(200).json(response);
+    })
+    .catch(err => {
+        res.status(500).json({error: err, message: `Unable to delete project with id ${id}`});
+    });
+});
+
 module.exports = router;

@@ -3,7 +3,8 @@ module.exports = {
     addProject,
     getProject,
     getProjectWithDetails,
-    getProjectResources
+    getProjectResources,
+    removeProject
 }
 const Tasks = require('../tasks/tasks-model.js');
 
@@ -53,4 +54,15 @@ function getProjectResources(project_id) {
         .join('resources', 'resources.id', 'project_resources.resource_id')
         .where('project_id', project_id)
         .select('resources.id', 'resources.name', 'resources.description');
+}
+
+async function removeProject(project_id) {
+    const project = await getProject(project_id);
+
+    return db('projects')
+        .where({id : project_id})
+        .del()
+        .then(() => {
+            return project;
+        });
 }
