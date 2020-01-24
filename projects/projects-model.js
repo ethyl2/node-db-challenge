@@ -1,8 +1,11 @@
 module.exports = {
     getProjects,
     addProject,
-    getProject
+    getProject,
+    getProjectWithDetails,
+    getProjectResources
 }
+const Tasks = require('../tasks/tasks-model.js');
 
 const db = require('../data/db-config.js');
 
@@ -28,4 +31,26 @@ function getProject(project_id) {
     return db('projects')
         .where({ id: project_id})
         .first();
+}
+
+async function getProjectWithDetails(project_id) {
+    const tasks = await Tasks.getTasksForProject(project_id);
+    const details = await getProject(project_id);
+    const resources = await getProjectResources(project_id);
+
+    return {
+        'id': details.id,
+        'name': details.name,
+        'description': details.description,
+        'completed': details.completed,
+        'tasks': tasks,
+        'resources': resources
+    }
+}
+
+function getProjectResources(project_id) {
+    return db('project_resources')
+        .join('resources', 'resources.id', 'project_resources.resource_id')
+        .where('project_id', project_id)
+        .select('resources.id', 'resources.name', 'resources.description');
 }

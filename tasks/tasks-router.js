@@ -35,6 +35,17 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.get('/project/:id', (req, res) => {
+    const id = req.params.id;
+    Tasks.getTasksForProject(id)
+    .then(response => {
+        res.status(200).json(response);
+    })
+    .catch(err => {
+        res.status(500).json({error: err, message: `Unable to retrieve tasks for project of id ${id}`});
+    });
+});
+
 
 
 module.exports = router;

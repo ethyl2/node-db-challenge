@@ -36,4 +36,26 @@ router.get('/:id', (req, res) => {
     });
 })
 
+router.get('/:id/resources', (req, res) => {
+    const id = req.params.id;
+    Projects.getProjectResources(id)
+        .then(response => {
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            res.status(500).json({error: err, message: `Unable to retrieve resources for project of id ${id}`});
+        });
+});
+
+router.get('/:id/details', (req, res) => {
+    const id = req.params.id;
+    Projects.getProjectWithDetails(id)
+        .then(response => {
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            res.status(500).json({error: err, message: `Unable to retrieve details for project of id ${id}`});
+        });
+})
+
 module.exports = router;

@@ -1,7 +1,8 @@
 module.exports = {
     getTasks,
     addTask,
-    getTask
+    getTask,
+    getTasksForProject
 }
 
 const db = require('../data/db-config.js');
@@ -45,4 +46,9 @@ function getTask(task_id) {
             'tasks.completed as task_completed')
         .where({'task_id' : task_id})
         .first();
+}
+
+function getTasksForProject(project_id) {
+    return db('tasks')
+        .where({'project_id': project_id});
 }

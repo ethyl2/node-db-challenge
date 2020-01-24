@@ -36,4 +36,19 @@ router.post('/', (req, res) => {
         }); 
 });
 
+router.post('/:resource_id/connect/:project_id', (req, res) => {
+    const resource_id = req.params.resource_id;
+    const project_id = req.params.project_id;
+
+    Resources.connectResourceToProject(resource_id, project_id)
+        .then(response => {
+            console.log(response);
+            res.status(201).json(response);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ message: 'Failed to create new connection' });
+        })
+});
+
 module.exports = router;

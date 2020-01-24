@@ -1,7 +1,8 @@
 module.exports = {
     getResources,
     addResource,
-    getResource
+    getResource,
+    connectResourceToProject
 }
 
 const db = require('../data/db-config.js');
@@ -21,5 +22,14 @@ function getResource(resource_id) {
     return db('resources')
         .where({id: resource_id})
         .first();
+}
+
+function connectResourceToProject(resource_id, project_id) {
+    const connection = {
+        resource_id: resource_id,
+        project_id: project_id
+    }
+    return db('project_resources')
+        .insert(connection)
 }
 
