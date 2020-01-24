@@ -2,7 +2,9 @@ module.exports = {
     getTasks,
     addTask,
     getTask,
-    getTasksForProject
+    getTasksForProject,
+    removeTask,
+    updateTask
 }
 
 const db = require('../data/db-config.js');
@@ -51,4 +53,24 @@ function getTask(task_id) {
 function getTasksForProject(project_id) {
     return db('tasks')
         .where({'project_id': project_id});
+}
+
+async function removeTask(task_id) {
+        const task = await getTask(task_id);
+    
+        return db('tasks')
+            .where({id : task_id})
+            .del()
+            .then(() => {
+                return task;
+            });
+}
+
+function updateTask(task_id, updatedTask) {
+    return db('tasks')
+        .where({id : task_id})
+        .update(updatedTask)
+        .then(count => {
+            return getTask(task_id);
+        });
 }
